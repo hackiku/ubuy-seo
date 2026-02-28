@@ -1,11 +1,13 @@
 // src/app/browse/[country]/[category]/[id]/page.tsx
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getMockListing } from "~/data/mock/listings";
 import { getCountry } from "~/data/mock/categories";
+import { buildProductSchema, buildBreadcrumbSchema, buildSchemaGraph } from "~/lib/seo/schema";
+import { listingMeta } from "~/lib/seo/metadata";
 import { ListingDetailView } from "~/components/browse/ListingDetailView";
 import { SchemaScript } from "~/components/browse/SchemaScript";
+import { Breadcrumbs } from "~/components/browse/Breadcrumbs";
 
 export const revalidate = 3600;
 
@@ -14,15 +16,10 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const { id } = await params;
+	const { country, category, id } = await params;
 	const listing = getMockListing(id);
 	if (!listing) return {};
-	const total = listing.price + (listing.shipping ?? 0);
-	return {
-		title: `${listing.title} | uBuyFirst`,
-		description: `${listing.condition} · $${total.toFixed(2)} total · Seller: ${listing.seller.username} (${listing.seller.feedbackPercent}% positive)`,
-		openGraph: { images: listing.imageUrl ? [listing.imageUrl] : [] },
-	};
+	return listingMeta(listing, country, category);
 }
 
 export default async function ListingPage({ params }: Props) {
@@ -34,49 +31,31 @@ export default async function ListingPage({ params }: Props) {
 	const listing = getMockListing(id);
 	if (!listing) notFound();
 
-	const schema = {
-		"@context": "https://schema.org",
-		"@type": "Product",
-		name: listing.title,
-		image: listing.images.length > 0 ? listing.images : [listing.imageUrl],
-		offers: {
-			"@type": "Offer",
-			price: listing.price.toFixed(2),
-			priceCurrency: countryData.currency,
-			availability: "https://schema.org/InStock",
-			priceValidUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-				.toISOString()
-				.split("T")[0],
-			url: listing.affiliateUrl,
-			seller: { "@type": "Person", name: listing.seller.username },
-		},
-		itemCondition:
-			listing.condition === "New"
-				? "https://schema.org/NewCondition"
-				: listing.condition === "Refurbished"
-					? "https://schema.org/RefurbishedCondition"
-					: "https://schema.org/UsedCondition",
-	};
+	// Combine Product + BreadcrumbList into a single @graph — cleanest for Google
+	const productSchema = buildProductSchema(listing, countryData.currency);
+	const breadcrumbSchema = buildBreadcrumbSchema([
+		{ name: "Browse", href: "/browse" },
+		{ name: countryData.label, href: `/browse/${country}` },
+		{ name: category.replace(/-/g, " "), href: `/browse/${country}/${category}` },
+		{ name: listing.title },
+	]);
+	const graphSchema = buildSchemaGraph(productSchema, breadcrumbSchema);
 
 	return (
 		<>
-			<SchemaScript schema={schema} />
-			<div className="min-h-screen bg-background">
-				<div className="mx-auto max-w-5xl px-4 py-6">
+			<SchemaScript schema={graphSchema} />
+			<div className="mx-auto max-w-5xl px-4 py-6">
+				<Breadcrumbs
+					crumbs={[
+						{ name: "Browse", href: "/browse" },
+						{ name: countryData.label, href: `/browse/${country}` },
+						{ name: category.replace(/-/g, " "), href: `/browse/${country}/${category}` },
+						{ name: listing.title },
+					]}
+					pageSchema={graphSchema}
+				/>
 
-					<nav className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground">
-						<Link href="/browse" className="hover:text-foreground transition-colors">Browse</Link>
-						<span>/</span>
-						<Link href={`/browse/${country}/${category}`} className="hover:text-foreground transition-colors capitalize">
-							{category.replace(/-/g, " ")}
-						</Link>
-						<span>/</span>
-						<span className="max-w-xs truncate text-foreground">{listing.title}</span>
-					</nav>
-
-					<ListingDetailView listing={listing} />
-
-				</div>
+				<ListingDetailView listing={listing} />
 			</div>
 		</>
 	);

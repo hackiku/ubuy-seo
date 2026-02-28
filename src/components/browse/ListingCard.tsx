@@ -1,11 +1,10 @@
-// src/app/browse/_components/ListingCard.tsx
+// src/components/browse/ListingCard.tsx
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { MapPin, Clock, Eye, EyeOff, ShoppingCart, Ellipsis } from "lucide-react";
+import * as Flags from "country-flag-icons/react/3x2";
 import type { Listing } from "~/data/mock/listings";
-import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -13,6 +12,11 @@ interface Props {
 	listing: Listing;
 	country: string;
 	category: string;
+}
+
+function Flag({ code }: { code: string }) {
+	const FlagSvg = Flags[code as keyof typeof Flags];
+	return FlagSvg ? <FlagSvg className="inline-block h-3 w-[18px] shrink-0 align-middle" /> : null;
 }
 
 function formatFeedback(score: number): string {
@@ -48,24 +52,12 @@ function ListingTypeBadge({ type }: { type: Listing["listingType"] }) {
 	);
 }
 
-function FlagImg({ code, size = 12 }: { code: string; size?: number }) {
-	return (
-		<img
-			alt={code}
-			src={`/images/flags/${code}.SVG`}
-			style={{ height: size, width: size * 1.5, objectFit: "contain" }}
-			loading="lazy"
-			className="inline-block align-middle"
-		/>
-	);
-}
-
 export function ListingCard({ listing, country, category }: Props) {
 	const total = listing.price + (listing.shipping ?? 0);
 
 	return (
 		<div className="relative flex flex-col md:flex-row cursor-pointer rounded-lg border bg-card shadow-sm transition-all hover:shadow-md">
-			{/* Image section */}
+			{/* Image */}
 			<div className="relative flex shrink-0 flex-col items-center p-2 pt-3" style={{ width: 144 }}>
 				<Link href={`/browse/${country}/${category}/${listing.id}`}>
 					<div className="relative overflow-hidden rounded-md bg-muted" style={{ width: 128, height: 128 }}>
@@ -76,7 +68,7 @@ export function ListingCard({ listing, country, category }: Props) {
 								className="absolute inset-0 h-full w-full object-cover"
 							/>
 						) : (
-							<div className="absolute inset-0 flex items-center justify-center bg-muted text-xs text-muted-foreground">
+							<div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
 								No image
 							</div>
 						)}
@@ -84,28 +76,20 @@ export function ListingCard({ listing, country, category }: Props) {
 				</Link>
 			</div>
 
-			{/* Content section */}
+			{/* Content */}
 			<div className="flex min-w-0 flex-1 flex-col justify-center py-2 pr-2">
 				<h3 className="line-clamp-1 text-sm font-medium leading-tight">
-					<Link
-						href={`/browse/${country}/${category}/${listing.id}`}
-						className="hover:underline"
-					>
+					<Link href={`/browse/${country}/${category}/${listing.id}`} className="hover:underline">
 						{listing.title}
 					</Link>
 				</h3>
 
-				{/* Price */}
 				<div className="mt-1 flex flex-wrap items-baseline gap-1">
 					<span className="text-base font-bold text-green-600">
-						{listing.listingType === "Auction" && listing.bids === 0
-							? "Starting bid"
-							: `$${listing.price.toFixed(2)}`}
+						${listing.price.toFixed(2)}
 					</span>
 					{listing.shipping !== null ? (
-						<span className="text-xs text-muted-foreground">
-							+${listing.shipping.toFixed(2)} ship
-						</span>
+						<span className="text-xs text-muted-foreground">+${listing.shipping.toFixed(2)} ship</span>
 					) : (
 						<span className="text-xs text-green-600">Free shipping</span>
 					)}
@@ -114,7 +98,6 @@ export function ListingCard({ listing, country, category }: Props) {
 					<div className="text-xs text-muted-foreground">${total.toFixed(2)} Total</div>
 				)}
 
-				{/* Badges */}
 				<div className="mt-1 flex flex-wrap items-center gap-1.5">
 					<ListingTypeBadge type={listing.listingType} />
 					<span className="rounded px-2 py-0.5 text-xs font-medium bg-gray-100 border border-gray-300 text-gray-700 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300">
@@ -127,15 +110,14 @@ export function ListingCard({ listing, country, category }: Props) {
 					)}
 				</div>
 
-				{/* Location */}
 				<div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
 					<MapPin className="size-3" aria-hidden />
 					<span>{listing.location}</span>
-					<FlagImg code={listing.countryCode} />
+					<Flag code={listing.countryCode} />
 				</div>
 			</div>
 
-			{/* Seller section */}
+			{/* Seller sidebar */}
 			<div className="flex w-full flex-col justify-between border-t bg-muted/30 p-2.5 md:w-48 md:shrink-0 md:border-l md:border-t-0">
 				<div className="flex items-center justify-between gap-2">
 					<Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-foreground">
@@ -149,23 +131,17 @@ export function ListingCard({ listing, country, category }: Props) {
 
 				<div className="mt-1">
 					<div className="flex items-center gap-1">
-						<FlagImg code={listing.seller.countryCode} size={14} />
+						<Flag code={listing.seller.countryCode} />
 						<span className="truncate text-xs font-medium">{listing.seller.username}</span>
 					</div>
 					<div className="flex items-center gap-2 text-xs text-muted-foreground">
-						<span className="flex items-center gap-0.5">
-							📦 {formatFeedback(listing.seller.feedbackScore)}
-						</span>
+						<span>📦 {formatFeedback(listing.seller.feedbackScore)}</span>
 						<span>⭐ {listing.seller.feedbackPercent.toFixed(1)}%</span>
 					</div>
 				</div>
 
 				<div className="mt-2 flex flex-col gap-1">
-					<Button
-						asChild
-						variant="outline"
-						className="h-7 w-full gap-1 border-blue-600 text-xs text-blue-600 hover:bg-blue-50"
-					>
+					<Button asChild variant="outline" className="h-7 w-full gap-1 border-blue-600 text-xs text-blue-600 hover:bg-blue-50">
 						<Link href={`/browse/${country}/${category}/${listing.id}`}>
 							<Eye className="size-3" aria-hidden />
 							View Details
