@@ -7,6 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 
 import { ThemeProvider } from "~/components/theme-provider"
 import Nav from "~/components/navigation/Nav";
+import { Footer } from "~/components/navigation/Footer";
 
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
 					>	
 						<Nav />
 						{children}
+						<Footer />
 					</ThemeProvider>
 				</TRPCReactProvider>
 			</body>
