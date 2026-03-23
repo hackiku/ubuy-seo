@@ -1,5 +1,4 @@
 // src/app/lots/[slug]/page.tsx
-"use client"
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -8,24 +7,25 @@ import { getCategory, STATIC_LOT_SLUGS, LOT_CATEGORIES } from "~/data/lots/regis
 import { getCompetitors } from "~/data/lots/competitors";
 import { CompetitorGrid } from "~/app/lots/_components/CompetitorGrid";
 import { Breadcrumbs } from "~/components/browse/Breadcrumbs";
-import { GenericLotCard, toGenericLot } from "~/app/lots/_components/GenericLotCard";
+import { GenericLotCard } from "~/app/lots/_components/GenericLotCard";
+import { toGenericLot } from "~/lib/lots/toGenericLot";
 
 interface Props {
 	params: Promise<{ slug: string }>;
 }
 
-// export async function generateStaticParams() {
-// 	return LOT_CATEGORIES
-// 		.filter((c) => !STATIC_LOT_SLUGS.has(c.slug))
-// 		.map((c) => ({ slug: c.slug }));
-// }
+export async function generateStaticParams() {
+	return LOT_CATEGORIES
+		.filter((c) => !STATIC_LOT_SLUGS.has(c.slug))
+		.map((c) => ({ slug: c.slug }));
+}
 
-// export async function generateMetadata({ params }: Props): Promise<Metadata> {
-// 	const { slug } = await params;
-// 	const category = getCategory(slug);
-// 	if (!category) return {};
-// 	return { title: category.metaTitle, description: category.metaDescription };
-// }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { slug } = await params;
+	const category = getCategory(slug);
+	if (!category) return {};
+	return { title: category.metaTitle, description: category.metaDescription };
+}
 
 // Lazy-load mock data by slug — try/catch so missing files don't crash
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
