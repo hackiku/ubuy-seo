@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uBuyFirst — V1 SEO Strategy Visual</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f6f8; color: #1a1a2e; padding: 32px; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 32px; }
+  .draft-tag { display: inline-block; background: #fff3cd; color: #856404; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+
+  /* ── Market Position ── */
+  .market-section { background: #fff; border-radius: 12px; border: 1px solid #e0e0e8; padding: 28px; margin-bottom: 24px; }
+  .market-section h2 { font-size: 18px; margin-bottom: 16px; }
+  .cascade { display: flex; gap: 0; align-items: flex-end; height: 200px; margin: 20px 0; }
+  .cascade-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; }
+  .bar-fill { width: 70%; border-radius: 6px 6px 0 0; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 14px; transition: height 0.3s; min-height: 30px; }
+  .bar-label { font-size: 11px; color: #666; text-align: center; padding: 8px 4px 0; font-weight: 600; }
+  .bar-sublabel { font-size: 10px; color: #999; text-align: center; }
+  .bar-product { font-size: 10px; color: #fff; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
+  .cascade-arrow { font-size: 20px; color: #999; margin: 0 -8px; align-self: center; }
+
+  /* ── Flywheel ── */
+  .flywheel-section { background: #fff; border-radius: 12px; border: 1px solid #e0e0e8; padding: 28px; margin-bottom: 24px; }
+  .flywheel-section h2 { font-size: 18px; margin-bottom: 6px; }
+  .flywheel-section .desc { font-size: 13px; color: #666; margin-bottom: 20px; }
+  .flywheel { display: flex; gap: 12px; flex-wrap: wrap; align-items: stretch; }
+  .fw-step { flex: 1; min-width: 180px; background: #f7f8fa; border: 1px solid #e4e4ec; border-radius: 10px; padding: 16px; position: relative; }
+  .fw-step .step-num { position: absolute; top: -10px; left: 14px; background: #1a1a2e; color: #4ecdc4; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .fw-step h3 { font-size: 14px; margin-bottom: 6px; margin-top: 6px; }
+  .fw-step ul { font-size: 12px; color: #555; padding-left: 16px; line-height: 1.6; }
+  .fw-step .example { font-size: 11px; color: #888; margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px; font-style: italic; }
+  .fw-arrow { display: flex; align-items: center; font-size: 24px; color: #4ecdc4; font-weight: 700; flex-shrink: 0; }
+
+  /* ── Category Table ── */
+  .cat-section { background: #fff; border-radius: 12px; border: 1px solid #e0e0e8; padding: 28px; margin-bottom: 24px; }
+  .cat-section h2 { font-size: 18px; margin-bottom: 6px; }
+  .cat-section .desc { font-size: 13px; color: #666; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: #f7f8fa; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 2px solid #e4e4ec; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f0f0f4; vertical-align: top; }
+  tr:hover td { background: #fafbfc; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+  .tag-green { background: #e6f9f0; color: #0a8a4a; }
+  .tag-yellow { background: #fff8e6; color: #b8860b; }
+  .tag-blue { background: #e8f0fe; color: #1a56db; }
+  .tag-purple { background: #f3e8ff; color: #7c3aed; }
+
+  /* ── Example Breakdown ── */
+  .example-section { background: #fff; border-radius: 12px; border: 2px solid #4ecdc4; padding: 28px; margin-bottom: 24px; }
+  .example-section h2 { font-size: 18px; margin-bottom: 4px; color: #1a1a2e; }
+  .example-section .label { font-size: 12px; color: #4ecdc4; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+  .example-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .eg-card { background: #f7f8fa; border: 1px solid #e4e4ec; border-radius: 8px; padding: 14px; }
+  .eg-card h4 { font-size: 13px; margin-bottom: 6px; }
+  .eg-card p, .eg-card ul { font-size: 12px; color: #555; line-height: 1.5; }
+  .eg-card ul { padding-left: 16px; }
+  .eg-wide { grid-column: 1 / -1; }
+
+  /* ── Revenue Diagram ── */
+  .rev-flows { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+  .rev-box { text-align: center; padding: 14px 20px; border-radius: 10px; min-width: 160px; }
+  .rev-box.primary { background: #1a1a2e; color: #fff; }
+  .rev-box.primary .rev-label { color: #4ecdc4; }
+  .rev-box.secondary { background: #e6f9f0; color: #0a8a4a; }
+  .rev-box .rev-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+  .rev-box .rev-desc { font-size: 13px; font-weight: 600; }
+  .rev-arrow { display: flex; align-items: center; font-size: 20px; color: #ccc; }
+
+  /* ── Phase Timeline ── */
+  .phase-section { background: #fff; border-radius: 12px; border: 1px solid #e0e0e8; padding: 28px; margin-bottom: 24px; }
+  .phase-section h2 { font-size: 18px; margin-bottom: 16px; }
+  .phases { display: flex; gap: 16px; flex-wrap: wrap; }
+  .phase { flex: 1; min-width: 200px; border-radius: 10px; padding: 18px; }
+  .phase.current { background: #e6f9f0; border: 2px solid #0a8a4a; }
+  .phase.next { background: #e8f0fe; border: 2px solid #1a56db; }
+  .phase.future { background: #f7f8fa; border: 2px solid #e4e4ec; }
+  .phase h3 { font-size: 14px; margin-bottom: 8px; }
+  .phase ul { font-size: 12px; color: #555; padding-left: 16px; line-height: 1.7; }
+  .phase .phase-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .phase.current .phase-label { color: #0a8a4a; }
+  .phase.next .phase-label { color: #1a56db; }
+  .phase.future .phase-label { color: #999; }
+
+  /* ── Discussion Qs ── */
+  .qs-section { background: #1a1a2e; border-radius: 12px; padding: 28px; color: #fff; }
+  .qs-section h2 { font-size: 18px; margin-bottom: 16px; color: #4ecdc4; }
+  .qs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .q-item { background: rgba(255,255,255,0.06); border-radius: 8px; padding: 12px 14px; font-size: 13px; line-height: 1.4; }
+  .q-item .q-num { color: #4ecdc4; font-weight: 700; margin-right: 6px; }
+
+  @media (max-width: 768px) {
+    .example-grid { grid-template-columns: 1fr; }
+    .qs-grid { grid-template-columns: 1fr; }
+    .cascade { height: auto; flex-direction: column; align-items: stretch; }
+    .cascade-bar { flex-direction: row; height: auto; }
+    .bar-fill { width: auto; height: 40px; border-radius: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>uBuyFirst — Public Pages Strategy <span class="draft-tag">DRAFT — For Discussion</span></h1>
+<p class="subtitle">Pre-read for Ivan — SEO + Public Pages kickoff call, March 2026</p>
+
+<!-- ═══════════ MARKET POSITION ═══════════ -->
+<div class="market-section">
+  <h2>Our Market Position: Purchase Volume by Time from Listing</h2>
+  <p style="font-size:13px;color:#666;margin-bottom:16px;">In categories with enough volume for dedicated purchasing agents, we capture a significant share of all purchases. As the buying window widens, total volume cascades upward — and different products serve each tier.</p>
+
+  <div class="cascade">
+    <div class="cascade-bar">
+      <div class="bar-fill" style="height:50px;background:linear-gradient(180deg,#e74c3c,#c0392b);">
+        ~40-50%
+      </div>
+      <div class="bar-label">1–3 min</div>
+      <div class="bar-sublabel">Speed sniping</div>
+      <div style="margin-top:4px;"><span class="tag tag-green">Desktop App</span></div>
+    </div>
+    <div class="cascade-arrow">→</div>
+    <div class="cascade-bar">
+      <div class="bar-fill" style="height:100px;background:linear-gradient(180deg,#e67e22,#d35400);">
+        ~2x
+      </div>
+      <div class="bar-label">5–30 min</div>
+      <div class="bar-sublabel">Quick scan</div>
+      <div style="margin-top:4px;"><span class="tag tag-blue">Web App Alerts</span></div>
+    </div>
+    <div class="cascade-arrow">→</div>
+    <div class="cascade-bar">
+      <div class="bar-fill" style="height:150px;background:linear-gradient(180deg,#f1c40f,#d4ac0f);">
+        ~4x
+      </div>
+      <div class="bar-label">30 min – hours</div>
+      <div class="bar-sublabel">Batch processing</div>
+      <div style="margin-top:4px;"><span class="tag tag-blue">Web App Search</span></div>
+    </div>
+    <div class="cascade-arrow">→</div>
+    <div class="cascade-bar">
+      <div class="bar-fill" style="height:200px;background:linear-gradient(180deg,#2ecc71,#27ae60);">
+        ~8x
+      </div>
+      <div class="bar-label">Up to 1 day</div>
+      <div class="bar-sublabel">Full inventory review</div>
+      <div style="margin-top:4px;"><span class="tag tag-purple">SEO / Public Pages</span></div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:#888;margin-top:12px;"><em>Note: Relative volumes are directional — to be confirmed with sold data analysis. The key insight: the biggest volume pool is the widest window, and that's where public pages live.</em></p>
+</div>
+
+<!-- ═══════════ THE FLYWHEEL ═══════════ -->
+<div class="flywheel-section">
+  <h2>Per-Category Flywheel: What We Build for Each Niche</h2>
+  <p class="desc">Each hand-picked category gets this same playbook. V1 = do this 4–5 times with best candidates, validate, then systematize.</p>
+
+  <div class="flywheel">
+    <div class="fw-step">
+      <div class="step-num">1</div>
+      <h3>Deep Research</h3>
+      <ul>
+        <li>What do buyers in this niche actually care about?</li>
+        <li>Where's the friction on eBay?</li>
+        <li>What pricing/reference data exists?</li>
+        <li>What can AI solve that humans can't easily?</li>
+      </ul>
+      <div class="example">Video games: lot contents are opaque, need image AI to identify titles, PriceCharting for values</div>
+    </div>
+    <div class="fw-arrow">→</div>
+
+    <div class="fw-step">
+      <div class="step-num">2</div>
+      <h3>Curated Page</h3>
+      <ul>
+        <li>Live eBay listings, filtered + analyzed</li>
+        <li>AI processing (image recognition, model ID, pricing calc)</li>
+        <li>Industry-specific filters + sorting</li>
+        <li>Hero metric per niche (margin %, over-spot, etc.)</li>
+        <li>No login required — public, free</li>
+      </ul>
+      <div class="example">Video game lots page: AI identifies titles in each lot, shows GameStop buyback value vs. asking price</div>
+    </div>
+    <div class="fw-arrow">→</div>
+
+    <div class="fw-step">
+      <div class="step-num">3</div>
+      <h3>Content Article</h3>
+      <ul>
+        <li>Long-tail SEO keyword targeting</li>
+        <li>Optimized for AI search engines (snippets, structured answers)</li>
+        <li>Deep research on buyer interests (marketplaces, tools, tips)</li>
+        <li>"Top 10" format with real value per option</li>
+        <li>CTA links to curated page</li>
+      </ul>
+      <div class="example">"Top 10 Places to Source Video Games for Resale" — covers eBay, FB, meetups, Craigslist, with our page as the eBay answer</div>
+    </div>
+    <div class="fw-arrow">→</div>
+
+    <div class="fw-step">
+      <div class="step-num">4</div>
+      <h3>Light Marketing</h3>
+      <ul>
+        <li>1–2 YouTube videos (audience-targeted, not generic)</li>
+        <li>Reddit posting via partner (authentic presence)</li>
+        <li>Community forum seeding</li>
+        <li>No heavy backlink strategy needed at hand-curated scale</li>
+      </ul>
+      <div class="example">Post in r/GameFlipping, r/retrogaming. Short YouTube: "We built a tool that analyzes every video game lot on eBay"</div>
+    </div>
+    <div class="fw-arrow">→</div>
+
+    <div class="fw-step" style="border-color:#4ecdc4;background:#f0fffe;">
+      <div class="step-num" style="background:#4ecdc4;color:#1a1a2e;">5</div>
+      <h3>Repeat Revenue</h3>
+      <ul>
+        <li>Users bookmark the page</li>
+        <li>Daily/weekly return visits</li>
+        <li>Every purchase = affiliate revenue</li>
+        <li>Power users convert to web app</li>
+        <li>Page builds SEO authority over time</li>
+      </ul>
+      <div class="example">A reseller who finds one profitable lot will check the page every morning. Repeat visits compound.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ WORKED EXAMPLE: VIDEO GAME LOTS ═══════════ -->
+<div class="example-section">
+  <div class="label">Worked Example</div>
+  <h2>Video Game Lots — What One Niche Looks Like End-to-End</h2>
+  <p style="font-size:13px;color:#666;margin-bottom:16px;">A niche within a niche. We're not doing "all video games" — we're doing <strong>lots</strong> specifically, because that's where the friction is highest and AI adds the most value.</p>
+
+  <div class="example-grid">
+    <div class="eg-card">
+      <h4>The Buyer's Problem</h4>
+      <ul>
+        <li>Lots contain 10–60+ games across multiple systems</li>
+        <li>Must identify every title from photos (glare, stacking, partial visibility)</li>
+        <li>Must cross-reference each title against buyback pricing</li>
+        <li>Must calculate total value vs. asking price — under time pressure</li>
+        <li>Today this is done manually: screenshot → ChatGPT → wait → separate math</li>
+      </ul>
+    </div>
+    <div class="eg-card">
+      <h4>What We Solve</h4>
+      <ul>
+        <li>AI reads listing photos and extracts individual game titles</li>
+        <li>Each title matched to PriceCharting/GameStop buyback values</li>
+        <li>Total lot value calculated automatically</li>
+        <li>Margin displayed: asking price vs. resale value</li>
+        <li>Works for retail collectors AND professional resellers</li>
+      </ul>
+    </div>
+    <div class="eg-card">
+      <h4>The Curated Page</h4>
+      <ul>
+        <li><strong>Main view:</strong> All analyzed lots, sorted by margin opportunity</li>
+        <li><strong>Sub-pages:</strong> Lots by system (SNES lots, N64 lots, PS2 lots, etc.)</li>
+        <li><strong>Per lot:</strong> AI confidence score, title breakdown, value per game, total vs. asking</li>
+        <li><strong>Filters:</strong> System, lot size, margin %, price range</li>
+        <li><strong>Volume:</strong> ~200 lots/day — manageable AI processing</li>
+      </ul>
+    </div>
+    <div class="eg-card">
+      <h4>The Content Article</h4>
+      <ul>
+        <li><strong>Target keyword:</strong> Long-tail (e.g., "how to buy video game lots for resale")</li>
+        <li><strong>Format:</strong> Top 10 review style, optimized for AI snippet extraction</li>
+        <li><strong>Covers:</strong> eBay, Facebook, meetups, Craigslist, wholesale, ads — with pros/cons of each</li>
+        <li><strong>Deep research</strong> on what resellers actually care about</li>
+        <li><strong>CTA:</strong> "For eBay, we've already built a curated page → link"</li>
+      </ul>
+    </div>
+    <div class="eg-card eg-wide">
+      <h4>The Marketing Push</h4>
+      <p style="margin-bottom:8px;">Lightweight — no massive backlink campaign needed at this scale:</p>
+      <ul>
+        <li><strong>YouTube:</strong> 1–2 short videos ("We analyze every video game lot on eBay — here's how it works")</li>
+        <li><strong>Reddit:</strong> Authentic posts in r/GameFlipping, r/retrogaming, r/gamecollecting (partner handles)</li>
+        <li><strong>Article:</strong> The content piece itself targets AI search + organic long-tail</li>
+        <li><strong>Community seeding:</strong> Discord servers, Facebook groups for resellers</li>
+        <li>At hand-curated scale (5 pages), you don't need proportionate backlinks — the content quality carries</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4 style="margin-bottom:10px;">Revenue Flows from One Page</h4>
+  <div class="rev-flows">
+    <div class="rev-box primary">
+      <div class="rev-label">Every Purchase</div>
+      <div class="rev-desc">EPN Affiliate Revenue</div>
+    </div>
+    <div class="rev-arrow">+</div>
+    <div class="rev-box secondary">
+      <div class="rev-label">Power Users Convert</div>
+      <div class="rev-desc">Web App Subscription</div>
+    </div>
+    <div class="rev-arrow">+</div>
+    <div class="rev-box primary">
+      <div class="rev-label">SEO Authority Compounds</div>
+      <div class="rev-desc">More Organic Traffic Over Time</div>
+    </div>
+  </div>
+
+  <p style="font-size:12px;color:#888;text-align:center;margin-top:8px;"><em>Existing mockup with full UI details available — see AI Analysis Page mockup (video game lots + gold tabs)</em></p>
+</div>
+
+<!-- ═══════════ V1 CATEGORY CANDIDATES ═══════════ -->
+<div class="cat-section">
+  <h2>V1 Sprint: Hand-Picked Category Candidates</h2>
+  <p class="desc">Goal: pick 5–10, build 4–5 in the first sprint. Each one is intentionally selected based on friction, AI fit, audience, and available data. Not programmatic — hand-curated to prove the model.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Why This One</th>
+        <th>AI Requirement</th>
+        <th>Pricing Source</th>
+        <th>Audience</th>
+        <th>Group</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Video Game Lots</strong></td>
+        <td>Highest friction niche — must ID titles from photos</td>
+        <td>Image recognition + title extraction</td>
+        <td>PriceCharting / GameStop</td>
+        <td>Resellers + collectors</td>
+        <td><span class="tag tag-blue">Lot Analysis</span></td>
+      </tr>
+      <tr>
+        <td><strong>Gold / Scrap Jewelry</strong></td>
+        <td>Spot price solved, domain expertise, concentrated community</td>
+        <td>Weight/karat extraction from descriptions</td>
+        <td>Live spot price (API)</td>
+        <td>Dealers + scrap buyers</td>
+        <td><span class="tag tag-yellow">Spot Price</span></td>
+      </tr>
+      <tr>
+        <td><strong>Server RAM</strong></td>
+        <td>Commodity matching proven (live with enterprise customer)</td>
+        <td>Part # matching, spec normalization</td>
+        <td>Market pricing + buy lists</td>
+        <td>IT resellers + data centers</td>
+        <td><span class="tag tag-green">Commodity Match</span></td>
+      </tr>
+      <tr>
+        <td><strong>Women's Handbags</strong></td>
+        <td>Authentication signal, brand ID, counterfeit filtering</td>
+        <td>Brand + model identification from images</td>
+        <td>Market comps (Rebag, Fashionphile)</td>
+        <td>Luxury resellers + collectors</td>
+        <td><span class="tag tag-purple">Luxury/Auth</span></td>
+      </tr>
+      <tr>
+        <td><strong>PLC / Industrial Drives</strong></td>
+        <td>Enterprise value, counterfeit risk (Allen Bradley), strategic hedge</td>
+        <td>Model ID + spec matching + legitimacy flagging</td>
+        <td>Specialized (enterprise)</td>
+        <td>Industrial buyers + MRO</td>
+        <td><span class="tag tag-green">Commodity Match</span></td>
+      </tr>
+      <tr>
+        <td><strong>Trading Card Lots</strong></td>
+        <td>Same lot-analysis pattern as video games, massive community</td>
+        <td>Image recognition + set identification</td>
+        <td>TCGPlayer / PSA pricing</td>
+        <td>Collectors + flippers</td>
+        <td><span class="tag tag-blue">Lot Analysis</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:12px;color:#888;margin-top:12px;"><em>Categories cluster into shared infrastructure groups — once the Lot Analysis pipeline works for video games, trading cards reuse 80% of it. Same for Spot Price (gold → silver) and Commodity Match (RAM → PLCs).</em></p>
+</div>
+
+<!-- ═══════════ PHASING ═══════════ -->
+<div class="phase-section">
+  <h2>The Path: Hand-Pick → Validate → Systematize</h2>
+
+  <div class="phases">
+    <div class="phase current">
+      <div class="phase-label">Phase 1 — Validate (Now → Q2)</div>
+      <h3>Hand-Curate 4–5 Pages</h3>
+      <ul>
+        <li>Pick best-fit categories from the list</li>
+        <li>Build each page intentionally — custom logic, custom content</li>
+        <li>Each gets: curated page + content article + YouTube + Reddit</li>
+        <li>Prove: traffic, engagement, affiliate revenue, conversions</li>
+        <li>Document what works and what doesn't</li>
+      </ul>
+    </div>
+    <div class="phase next">
+      <div class="phase-label">Phase 2 — Pattern</div>
+      <h3>Find the Consistencies</h3>
+      <ul>
+        <li>Which page elements perform across categories?</li>
+        <li>Which content formats convert?</li>
+        <li>Which distribution channels drive repeat visitors?</li>
+        <li>Build the repeatable playbook</li>
+        <li>Template the infrastructure groups</li>
+      </ul>
+    </div>
+    <div class="phase future">
+      <div class="phase-label">Phase 3 — Scale</div>
+      <h3>Data-Driven Expansion</h3>
+      <ul>
+        <li>Use buyer data to identify next 50–100 targets</li>
+        <li>Apply playbook systematically</li>
+        <li>Now backlink strategy + site architecture matter</li>
+        <li>Programmatic generation where patterns hold</li>
+        <li>This is where Ivan's SEO architecture expertise is critical</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ DISCUSSION QUESTIONS ═══════════ -->
+<div class="qs-section">
+  <h2>For Discussion: What We Want Ivan's Input On</h2>
+  <div class="qs-grid">
+    <div class="q-item"><span class="q-num">1.</span> Given these categories and our data — which 4–5 should we start with? What order?</div>
+    <div class="q-item"><span class="q-num">2.</span> Site structure: how should these pages relate to the main domain? Subdomain? Subfolder? Separate domains?</div>
+    <div class="q-item"><span class="q-num">3.</span> For AI search optimization — what content format/structure gets picked up by AI engines for snippets?</div>
+    <div class="q-item"><span class="q-num">4.</span> What's the minimum viable backlink/authority approach for 4–5 hand-curated pages? Is the content + Reddit enough to start?</div>
+    <div class="q-item"><span class="q-num">5.</span> Page design: what elements on a data-driven category page actually rank and convert in 2026?</div>
+    <div class="q-item"><span class="q-num">6.</span> When we scale from 5 to 50+ pages — what infrastructure/architecture decisions need to be made upfront?</div>
+    <div class="q-item"><span class="q-num">7.</span> Content articles: is the "Top 10" review format still the best template for AI + organic, or is there a better pattern?</div>
+    <div class="q-item"><span class="q-num">8.</span> YouTube + Reddit as initial distribution — realistic or are we missing a critical channel?</div>
+  </div>
+</div>
+
+<p style="text-align:center;color:#999;font-size:11px;margin-top:24px;">uBuyFirst — Draft for internal discussion — March 2026</p>
+
+</body>
+</html>
