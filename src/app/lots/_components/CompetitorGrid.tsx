@@ -1,5 +1,5 @@
-// src/app/catalog/_components/CompetitorGrid.tsx
-import type { Competitor } from "~/data/catalog/competitors";
+// src/app/lots/_components/CompetitorGrid.tsx
+import type { Competitor } from "~/data/lots/competitors";
 import { ExternalLink } from "lucide-react";
 
 const TYPE_STYLES: Record<Competitor["type"], { label: string; className: string }> = {
@@ -39,10 +39,10 @@ export function CompetitorGrid({ competitors }: Props) {
 							className="group flex flex-col gap-2 rounded-lg border bg-card p-4 transition hover:border-primary/40 hover:bg-muted/30"
 						>
 							<div className="flex items-start justify-between gap-2">
-								<span className="font-medium text-sm group-hover:text-primary transition-colors">
+								<span className="text-sm font-medium transition-colors group-hover:text-primary">
 									{c.name}
 								</span>
-								<ExternalLink className="size-3.5 shrink-0 mt-0.5 text-muted-foreground/50 group-hover:text-muted-foreground transition-colors" />
+								<ExternalLink className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/50 transition-colors group-hover:text-muted-foreground" />
 							</div>
 
 							<span className="text-xs text-muted-foreground">{c.domain}</span>
@@ -51,9 +51,7 @@ export function CompetitorGrid({ competitors }: Props) {
 								{c.description}
 							</p>
 
-							<span
-								className={`mt-auto self-start rounded border px-2 py-0.5 text-[10px] font-medium ${badge.className}`}
-							>
+							<span className={`mt-auto self-start rounded border px-2 py-0.5 text-[10px] font-medium ${badge.className}`}>
 								{badge.label}
 							</span>
 						</a>
@@ -63,3 +61,5 @@ export function CompetitorGrid({ competitors }: Props) {
 		</section>
 	);
 }
+
+

@@ -1,10 +1,9 @@
-// src/app/catalog/_components/VideoGameLotCard.tsx
+// src/app/lots/_components/VideoGameLotCard.tsx
 "use client";
 
-import Link from "next/link";
-import { Clock, ShoppingCart, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import type { VideoGameLot } from "~/data/catalog/mock/videogames";
+import { Clock, ShoppingCart, ChevronDown, ChevronUp } from "lucide-react";
+import type { VideoGameLot, GameTitle } from "~/data/lots/mock/videogames";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -45,14 +44,12 @@ export function VideoGameLotCard({ lot }: { lot: VideoGameLot }) {
 		<div className="rounded-lg border bg-card shadow-sm transition hover:shadow-md">
 			<div className="flex flex-col gap-3 p-4 md:flex-row md:items-start">
 
-				{/* Thumbnail */}
-				<div className="size-24 shrink-0 overflow-hidden rounded-md bg-muted flex items-center justify-center text-xs text-muted-foreground">
+				<div className="flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted text-xs text-muted-foreground">
 					No image
 				</div>
 
-				{/* Main info */}
 				<div className="flex min-w-0 flex-1 flex-col gap-1.5">
-					<h3 className="text-sm font-medium leading-snug line-clamp-2">
+					<h3 className="line-clamp-2 text-sm font-medium leading-snug">
 						{lot.title}
 					</h3>
 
@@ -68,7 +65,6 @@ export function VideoGameLotCard({ lot }: { lot: VideoGameLot }) {
 						<MarginBadge pct={lot.marginPercent} />
 					</div>
 
-					{/* AI summary line */}
 					<div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
 						<span>{lot.extractedTitles.length} titles identified</span>
 						<span>·</span>
@@ -87,7 +83,6 @@ export function VideoGameLotCard({ lot }: { lot: VideoGameLot }) {
 					</div>
 				</div>
 
-				{/* CTAs */}
 				<div className="flex shrink-0 flex-row gap-2 md:flex-col">
 					<Button
 						variant="ghost"
@@ -107,16 +102,15 @@ export function VideoGameLotCard({ lot }: { lot: VideoGameLot }) {
 				</div>
 			</div>
 
-			{/* Expanded title breakdown */}
 			{open && (
 				<div className="border-t px-4 py-3">
 					<p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
 						AI-Extracted Titles
 					</p>
 					<div className="flex flex-col gap-1.5">
-						{lot.extractedTitles.map((t, i) => (
+						{lot.extractedTitles.map((t: GameTitle, i: number) => (
 							<div key={i} className="flex items-center justify-between gap-4 text-xs">
-								<div className="flex items-center gap-2 min-w-0">
+								<div className="flex min-w-0 items-center gap-2">
 									<ConfidenceDots score={t.confidence} />
 									<span className="truncate font-medium">{t.title}</span>
 									<span className="shrink-0 text-muted-foreground">{t.platform}</span>

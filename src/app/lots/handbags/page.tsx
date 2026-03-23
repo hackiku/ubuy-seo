@@ -13,7 +13,7 @@ export default function HandbagsCatalogPage() {
 		<div className="mx-auto max-w-5xl px-4 py-6">
 			<Breadcrumbs
 				crumbs={[
-					{ name: "Catalog", href: "/catalog" },
+					{ name: "Lots", href: "/lots" },
 					{ name: "Women's Handbags" },
 				]}
 			/>
